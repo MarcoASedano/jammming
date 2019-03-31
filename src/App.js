@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import SearchBar from './components/SearchBar/SearchBar';
 
 class App extends Component {
   render() {
@@ -8,10 +9,7 @@ class App extends Component {
         <div>
           <h1>Ja<span class="highlight">mmm</span>ing</h1>
           <div class="App">
-            <div class="SearchBar">
-              <input placeholder="Enter A Song Title" />
-              <a>SEARCH</a>
-            </div>
+            <SearchBar />
             <div class="App-playlist">
               <div class="SearchResults">
                 <h2>Results</h2>
