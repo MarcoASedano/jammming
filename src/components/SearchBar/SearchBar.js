@@ -27,7 +27,7 @@ class SearchBar extends React.Component {
   }
 
   handleSearch(event) {
-    console.log('Search engaged! Input is: ' + this.state.input);
+    this.props.searchSpotify(this.state.input);
     event.preventDefault();
   }
 

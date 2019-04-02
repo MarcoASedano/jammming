@@ -1,6 +1,6 @@
-const clientId = '540f2aed8bcf4f74b9349bb7deeb4f04';
+// const clientId = '540f2aed8bcf4f74b9349bb7deeb4f04';
 
-const Yelp = {
+const Spotify = JSON.parse(`{
   "tracks": {
     "href": "https://api.spotify.com/v1/search?query=pink+floyd&type=track&market=US&offset=0&limit=10",
     "items": [
@@ -2381,4 +2381,5 @@ const Yelp = {
     "previous": null,
     "total": 3915
   }
-}
+}`);
+export default Spotify;
