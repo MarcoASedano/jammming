@@ -27,7 +27,7 @@ class App extends Component {
           <div className="App">
             <SearchBar searchSpotify={this.searchSpotify} />
             <div className="App-playlist">
-              <SearchResults tracks={this.state.searchTracks}/>
+              <SearchResults searchTracks={this.state.searchTracks}/>
               <div className="Playlist">
                 <input value='New Playlist' />
                 
