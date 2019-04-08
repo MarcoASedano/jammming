@@ -20,12 +20,18 @@ class App extends Component {
   
   searchSpotify(input) {
     this.setState({
-      searchTracks: Spotify.tracks.items
+      searchTracks: Spotify.search(input)
     });
   }
   
   addTrackToPlaylist(track) {
     let tracks = this.state.playlistTracks;
+    for (let i = 0; i < tracks.length; i++) {
+      if (track.id === tracks[i].id) {
+        return;
+      }
+    }
+    
     tracks.push(track);
     
     this.setState({
@@ -38,6 +44,7 @@ class App extends Component {
     // find track index using id and remove it
     for (let i = 0; i < tracks.length; i++) {
       if (tracks[i].id === track.id) {
+        console.log(`${tracks[i]}`);
         tracks.splice(i, 1);
         break;
       }
@@ -51,7 +58,7 @@ class App extends Component {
   render() {
     return (
         <div>
-          <h1>Ja<span class="highlight">mmm</span>ing</h1>
+          <h1>Ja<span className="highlight">mmm</span>ing</h1>
           <div className="App">
             <SearchBar searchSpotify={this.searchSpotify} />
             <div className="App-playlist">

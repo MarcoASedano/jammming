@@ -18,12 +18,12 @@ class Track extends React.Component {
   
   render() {
     return (
-      <div class="Track">
-        <div class="Track-information">
+      <div className="Track">
+        <div className="Track-information">
           <h3>{this.props.track.name}</h3>
           <p>{this.props.track.artists[0].name} | {this.props.track.album.name}</p>
         </div>
-        <a class="Track-action" onClick={this.handleClick}>{this.props.trackAction}</a>
+        <a className="Track-action" onClick={this.handleClick}>{this.props.trackAction}</a>
       </div>
     );
   }
