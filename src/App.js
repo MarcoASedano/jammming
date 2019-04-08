@@ -12,18 +12,19 @@ class App extends Component {
       searchTracks: [],
       playlistTracks: []
     }
-    
+
     this.searchSpotify = this.searchSpotify.bind(this);
     this.addTrackToPlaylist = this.addTrackToPlaylist.bind(this);
     this.removeTrackFromPlaylist = this.removeTrackFromPlaylist.bind(this);
   }
-  
-  searchSpotify(input) {
+
+  async searchSpotify(input) {
+    let tracks = await Spotify.search(input);
     this.setState({
-      searchTracks: Spotify.search(input)
+      searchTracks: tracks
     });
   }
-  
+
   addTrackToPlaylist(track) {
     let tracks = this.state.playlistTracks;
     for (let i = 0; i < tracks.length; i++) {
@@ -31,14 +32,14 @@ class App extends Component {
         return;
       }
     }
-    
+
     tracks.push(track);
-    
+
     this.setState({
       playlistTracks: tracks
     });
   }
-  
+
   removeTrackFromPlaylist(track) {
     let tracks = this.state.playlistTracks;
     // find track index using id and remove it
@@ -49,12 +50,12 @@ class App extends Component {
         break;
       }
     }
-    
+
     this.setState({
       playlistTracks: tracks
     });
   }
-  
+
   render() {
     return (
         <div>

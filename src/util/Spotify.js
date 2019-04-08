@@ -7,40 +7,42 @@ const Spotify = {
   getAccessToken() {
     let accessTokenFromURL = window.location.href.match(/access_token=([^&]*)/);
     let expirationTimeFromURL = window.location.href.match(/expires_in=([^&]*)/);
-    
+
     if (accessToken) {
       return accessToken;
     } else if (accessTokenFromURL && expirationTimeFromURL) {
-      accessToken = accessTokenFromURL;
-      let expirationTime = expirationTimeFromURL;
-      
-      window.setTime(() => accessToken = '', expirationTime * 1000);
+      accessToken = accessTokenFromURL[1];
+      let expirationTime = expirationTimeFromURL[1];
+
+      window.setTimeout(() => accessToken = '', expirationTime * 1000);
       window.history.pushState('Access Token', null, '/');
+
+      return accessToken;
     } else if (!accessToken && !accessTokenFromURL) {
       window.location = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&scope=playlist-modify-public&redirect_uri=${REDIRECT_URI}`;
     }
   },
-  
+
   async search(input) {
     try {
-      let currentAccessToken = this.getAccessToken();
       let body = {
         headers: {
-          Authorization: `Bearer ${currentAccessToken}`
+          Authorization: `Bearer ${this.getAccessToken()}`
         }
       };
-      
+
       const response = await fetch(`https://api.spotify.com/v1/search?type=track&q=${input}`, body);
-      
+
       if (response.ok) {
         const jsonResponse = await response.json();
         if (jsonResponse.tracks.items.length > 0) {
+          console.log(jsonResponse);
           return jsonResponse.tracks.items
         } else {
           return [];
         }
       }
-      
+
       throw new Error('Request failed!');
     } catch (error) {
       console.log(error);
