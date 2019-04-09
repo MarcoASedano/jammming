@@ -27,7 +27,7 @@ class SearchBar extends React.Component {
   }
 
   handleSearch(event) {
-    this.props.searchSpotify(this.props.input);
+    this.props.searchSpotify(this.state.input);
     event.preventDefault();
   }
 

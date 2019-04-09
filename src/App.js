@@ -20,9 +20,12 @@ class App extends Component {
 
   async searchSpotify(input) {
     let tracks = await Spotify.search(input);
-    this.setState({
-      searchTracks: tracks
-    });
+
+    if (tracks) {
+      this.setState({
+        searchTracks: tracks
+      });
+    }
   }
 
   addTrackToPlaylist(track) {
@@ -45,7 +48,6 @@ class App extends Component {
     // find track index using id and remove it
     for (let i = 0; i < tracks.length; i++) {
       if (tracks[i].id === track.id) {
-        console.log(`${tracks[i]}`);
         tracks.splice(i, 1);
         break;
       }
