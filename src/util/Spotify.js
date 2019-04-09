@@ -53,7 +53,6 @@ const Spotify = {
           }
         }
       }
-
       throw new Error('Spotify Search Request failed!');
     } catch (error) {
       console.log(error);
@@ -61,62 +60,59 @@ const Spotify = {
   },
 
   async savePlaylist(playlistName, tracksURIs) {
-    if (playlistName && tracksURIs) {
-      let currentAccessToken = accessToken;
-      let headers = {
-        Authorization: `Bearer ${currentAccessToken}`
-      }
-      let userId = '';
+    try {
+      if (playlistName && tracksURIs) {
+        let currentAccessToken = accessToken;
+        let getUserIdHeader = {
+          Authorization: `Bearer ${currentAccessToken}`
+        }
+        let userId = '';
 
-      const response = await fetch('https://api.spotify.com/v1/me', {headers: headers});
-      if (response.ok) {
-        const jsonResponse = await response.json();
-        userId = jsonResponse.id;
-      } else {
-        return false;
-      }
-
-      if (userId) {
-        let headers = {
-          Authorization: `Bearer ${currentAccessToken}`,
-          'Content-Type': 'application/json'
+        const getUserIdResponse = await fetch('https://api.spotify.com/v1/me', {headers: getUserIdHeader});
+        if (getUserIdResponse.ok) {
+          const jsonResponse1 = await getUserIdResponse.json();
+          userId = jsonResponse1.id;
         }
 
-        let body = JSON.stringify({
-          name: `${playlistName}`,
-        });
+        if (userId) {
+          let postHeader = {
+            Authorization: `Bearer ${currentAccessToken}`,
+            'Content-Type': 'application/json'
+          }
 
-        const response2 = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
-          headers: headers,
-          method: 'POST',
-          body: body
-        });
-        if (response2.ok) {
-          const jsonResponse2 = await response2.json();
-          let playlistId = jsonResponse2.id;
+          let body1 = JSON.stringify({
+            name: `${playlistName}`,
+          });
 
-          if (playlistId) {
-            let body = JSON.stringify(tracksURIs);
-            const response3 = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`, {
-              headers: headers,
-              method: 'POST',
-              body: body
-            });
+          const createPlaylistResponse = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+            headers: postHeader,
+            method: 'POST',
+            body: body1
+          });
 
-            if (response3.ok) {
-              return true;
-            } else {
-              return false;
+          if (createPlaylistResponse.ok) {
+            const jsonResponse2 = await createPlaylistResponse.json();
+            let playlistId = jsonResponse2.id;
+
+            if (playlistId) {
+              let body2 = JSON.stringify(tracksURIs);
+              const addTracksResponse = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`, {
+                headers: postHeader,
+                method: 'POST',
+                body: body2
+              });
+
+              if (addTracksResponse.ok) {
+                return true;
+              }
             }
-          } else {
-            return false;
           }
         }
-      } else {
-        return false;
       }
-    } else {
-      return false;
+
+      throw new Error('Failed to create a new playlist');
+    } catch (error) {
+      console.log(error);
     }
   }
 }
