@@ -32,33 +32,29 @@ class App extends Component {
   }
 
   addTrackToPlaylist(track) {
-    let tracks = this.state.playlistTracks;
-    for (let i = 0; i < tracks.length; i++) {
-      if (track.id === tracks[i].id) {
-        return;
-      }
+    let tracks = [];
+    this.state.playlistTracks.forEach(track => tracks.push(track));
+
+    let index = tracks.findIndex(curr => curr.id === track.id);
+    if (index === -1) {
+      tracks.push(track);
+      this.setState({
+        playlistTracks: tracks
+      });
     }
-
-    tracks.push(track);
-
-    this.setState({
-      playlistTracks: tracks
-    });
   }
 
   removeTrackFromPlaylist(track) {
-    let tracks = this.state.playlistTracks;
-    // find track index using id and remove it
-    for (let i = 0; i < tracks.length; i++) {
-      if (tracks[i].id === track.id) {
-        tracks.splice(i, 1);
-        break;
-      }
-    }
+    let tracks = [];
+    this.state.playlistTracks.forEach(track => tracks.push(track));
 
-    this.setState({
-      playlistTracks: tracks
-    });
+    let index = tracks.findIndex(curr => curr.id === track.id);
+    if (index !== -1) {
+      tracks.splice(index, 1);
+      this.setState({
+        playlistTracks: tracks
+      });
+    }
   }
 
   handlePlaylistNameChange(name) {
